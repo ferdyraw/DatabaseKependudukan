@@ -1,0 +1,33 @@
+DROP TABLE IF EXISTS [KARTU_KELUARGA];
+DROP TABLE IF EXISTS [PENDUDUK];
+
+CREATE TABLE [PENDUDUK] (
+	[NIK] NVARCHAR (16),
+	[Nama] NVARCHAR (128),
+	[TanggalLahir] DATE,
+	[Sex] NVARCHAR(6),
+	[Alamat] NVARCHAR(128),
+	[NoTelp] NVARCHAR(20),
+	[Email] NVARCHAR(30)
+
+	PRIMARY KEY ([NIK])
+);
+
+CREATE TABLE [KARTU_KELUARGA] (
+	[NoKK] NVARCHAR (16),
+	[PendudukNIK] NVARCHAR (16),
+	[Jalan] NVARCHAR (20),
+	[RT] NVARCHAR (2),
+	[RW] NVARCHAR (2),
+	[Desa] NVARCHAR (20),
+	[Kecamatan] NVARCHAR (20),
+	[Kabupaten] NVARCHAR (20),
+	[Provinsi] NVARCHAR (20),
+	[KodePos] NVARCHAR (5),
+	[Kewarganegaraan] NVARCHAR (20),
+	[StatusPernikahan] NVARCHAR (15),
+	[StatusAnggota] NVARCHAR (10),
+
+	PRIMARY KEY ([NoKK]),
+	FOREIGN KEY ([PendudukNIK]) REFERENCES [PENDUDUK]([NIK])
+);
