@@ -43,7 +43,7 @@ CREATE TABLE [PENDUDUK] (
 	[Alamat_Provinsi] NVARCHAR (16),
 	[Alamat_KodePos] NVARCHAR (5),
 	[JenisKelamin] NVARCHAR (10),
-	[GolDarah] NVARCHAR (1),
+	[GolDarah] NVARCHAR (2),
 	[Kewarganegaraan] NVARCHAR (20),
 	[StatusPernikahan] NVARCHAR (15),
 	[Usia] INT,
