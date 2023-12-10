@@ -148,6 +148,7 @@ CREATE TABLE [PENDUDUK_PEKERJAAN] (
 	[PekerjaanID] UNIQUEIDENTIFIER,
 	[WaktuPerjalanan] INT,
 	[JamKerjaPerMinggu] INT,
+	[GajiPerTahun] MONEY,
 
 	PRIMARY KEY ([NIK], [PekerjaanID]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK]),
