@@ -79,7 +79,7 @@ CREATE TABLE [BPJS] (
 CREATE TABLE [KEKAYAAN] (
 	[ID] INT,
 	[NIK] CHAR (16),
-	[PendapatanPerTahun] MONEY,
+	[PendapatanPerTahun] DECIMAL,
 
 	PRIMARY KEY ([ID]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK])
@@ -91,7 +91,7 @@ CREATE TABLE [PROPERTI] (
 	[Jenis] VARCHAR (15),
 	[Luas] INT,
 	[Lokasi] VARCHAR (128),
-	[Harga] MONEY,
+	[Harga] DECIMAL,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
 	FOREIGN KEY ([KekayaanID]) REFERENCES [KEKAYAAN]([ID])
@@ -104,7 +104,7 @@ CREATE TABLE [KENDARAAN] (
 	[Jenis_Tipe] VARCHAR (15),
 	[Jenis_CC] INT,
 	[Jenis_BB] VARCHAR (17),
-	[NJKB] MONEY,
+	[NJKB] DECIMAL,
 	[Tahun] INT,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
@@ -115,7 +115,7 @@ CREATE TABLE [INVESTASI] (
 	[ID] INT,
 	[KekayaanID] INT,
 	[Jenis] VARCHAR (15),
-	[Dividen] MONEY,
+	[Dividen] DECIMAL,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
 	FOREIGN KEY ([KekayaanID]) REFERENCES [KEKAYAAN]([ID])
@@ -125,7 +125,7 @@ CREATE TABLE [BARANG_MEWAH] (
 	[ID] INT,
 	[KekayaanID] INT,
 	[Jenis] VARCHAR (15),
-	[Nilai] MONEY,
+	[Nilai] DECIMAL,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
 	FOREIGN KEY ([KekayaanID]) REFERENCES [KEKAYAAN]([ID])
@@ -137,7 +137,7 @@ CREATE TABLE [PEKERJAAN] (
 	[KekayaanID] INT,
 	[NamaPekerjaan] VARCHAR (20),
 	[Jenis] VARCHAR (20),
-	[GajiPerTahun] MONEY,
+	[GajiPerTahun] DECIMAL,
 	[Lokasi] VARCHAR (128),
 	[Perusahaan] VARCHAR (20),
 
