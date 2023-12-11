@@ -17,11 +17,3 @@ DELETE FROM [BPJS];
 DELETE FROM [PENDIDIKAN];
 DELETE FROM [PENDUDUK];
 DELETE FROM [KARTU_KELUARGA];
-
-INSERT INTO [KARTU_KELUARGA] ([ID])
-VALUES
-(N'7d0e90d5-cfe4-4640-afbd-de9ecc4b4f16')
-
-INSERT INTO [PENDUDUK]
-VALUES
-(N'3578282103060002', N'7d0e90d5-cfe4-4640-afbd-de9ecc4b4f16', N'Muhammad David', N'Surabaya, 21 Maret 2006', N'Surabaya', N'21 Maret 2006', N'Jl. Raya Greges Tim No.98, RT.001/RW.02, Kalianak, Kec. Asem Rowo, Surabaya, Jawa Timur 60183', N'Jl. Raya Greges Tim', N'RT.001/RW.02', N'Kalianak', N'Asem Rowo', N'Surabaya', N'Jawa Timur', N'60183', N'Laki-laki', N'AB', N'Indonesia', N'Belum Menikah', 17);
