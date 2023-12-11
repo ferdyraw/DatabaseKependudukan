@@ -19,62 +19,61 @@ DROP TABLE IF EXISTS [PENDUDUK];
 DROP TABLE IF EXISTS [KARTU_KELUARGA];
 
 CREATE TABLE [KARTU_KELUARGA] (
-	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NoKK] NVARCHAR (16),
-	[StatusAnggota] NVARCHAR (10),
-	[Nama_Ayah] NVARCHAR (32),
-	[Nama_Ibu] NVARCHAR (32),
+	--[KKID] UNIQUEIDENTIFIER DEFAULT NEWID(),
+	[NoKK] CHAR (16),
+	[StatusAnggota] VARCHAR (10),
+	[Nama_Ayah] VARCHAR (32),
+	[Nama_Ibu] VARCHAR (32),
 
-	PRIMARY KEY ([ID]),
+	PRIMARY KEY ([NoKK], [StatusAnggota]),
 );
 
 CREATE TABLE [PENDUDUK] (
-	[NIK] NVARCHAR (16),
-	[KKID] UNIQUEIDENTIFIER,
-	[NamaLengkap] NVARCHAR (64),
-	[TTL] NVARCHAR (30),
-	[Tempat_Lahir] NVARCHAR (15),
-	[Tanggal_Lahir] NVARCHAR (15),
-	[Alamat] NVARCHAR (128),
-	[Alamat_Jalan] NVARCHAR (32),
-	[Alamat_RTRW] NVARCHAR (16),
-	[Alamat_Desa] NVARCHAR (16),
-	[Alamat_Kecamatan] NVARCHAR (16),
-	[Alamat_Kabupaten] NVARCHAR (16),
-	[Alamat_Provinsi] NVARCHAR (16),
-	[Alamat_KodePos] NVARCHAR (5),
-	[JenisKelamin] NVARCHAR (10),
-	[GolDarah] NVARCHAR (2),
-	[Kewarganegaraan] NVARCHAR (20),
-	[StatusPernikahan] NVARCHAR (15),
-	[Usia] INT,
+	[NIK] CHAR (16),
+	-- [KKID] UNIQUEIDENTIFIER DEFAULT NEWID(),
+	[NamaLengkap] VARCHAR (64),
+	[TTL] VARCHAR (30),
+	[Tempat_Lahir] VARCHAR (15),
+	[Tanggal_Lahir] DATE,
+	[NoKK] CHAR (16),
+	[StatusAnggota] VARCHAR (10),
+	--[Alamat] VARCHAR (128),
+	[Alamat_Jalan] VARCHAR (32),
+	[Alamat_RTRW] CHAR (11),
+	[Alamat_Desa] VARCHAR (32),
+	[Alamat_Kecamatan] VARCHAR (32),
+	[Alamat_Kabupaten] VARCHAR (32),
+	[Alamat_Provinsi] VARCHAR (32),
+	[Alamat_KodePos] CHAR (5),
+	[JenisKelamin] VARCHAR (10),
+	[GolDarah] VARCHAR (2),
+	[Kewarganegaraan] VARCHAR (32),
+	[StatusPernikahan] VARCHAR (15),
+	--YEAR(CURDATE()) - YEAR([TANGGAL_LAHIR]) - (RIGHT(CURDATE(), 5) < RIGHT([TANGGAL_LAHIR], 5)) AS USIA FROM PENDUDUK;
 	
 	PRIMARY KEY ([NIK]),
-	FOREIGN KEY ([KKID]) REFERENCES [KARTU_KELUARGA]([ID])
+	FOREIGN KEY ([NoKK], [StatusAnggota]) REFERENCES [KARTU_KELUARGA]([NoKK], [StatusAnggota])
 );
 
 CREATE TABLE [PENDIDIKAN] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NIK] NVARCHAR (16),
-	[PendidikanTerakhir] NVARCHAR (10),
-	[PendidikanTerakhir_NamaInstansi] NVARCHAR (15),
-	[PendidikanTerakhir_Lokasi] NVARCHAR (64),
-	[PendidikanSekasrang] NVARCHAR (10),
-	[PendidikanSekarang_NamaInstansi] NVARCHAR (15),
-	[PendidikanSekarang_Lokasi] NVARCHAR (64),
-	[Tahun_SD] INT,
-	[Tahun_SMP] INT,
-	[Tahun_SMA] INT,
-	[Tahun_ST] INT,
+	[NIK] CHAR (16),
+	[PendidikanTerakhir] VARCHAR (10),
+	[PendidikanTerakhir_NamaInstansi] VARCHAR (15),
+	[PendidikanTerakhir_Lokasi] VARCHAR (64),
+	[PendidikanTerakhir_TahunLulus] INT,
+	[PendidikanSekarang] VARCHAR (10),
+	[PendidikanSekarang_NamaInstansi] VARCHAR (15),
+	[PendidikanSekarang_Lokasi] VARCHAR (64),
 
 	PRIMARY KEY ([ID]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK])
 );
 
 CREATE TABLE [BPJS] (
-	[NoPeserta] NVARCHAR (16),
-	[NIK] NVARCHAR (16),
-	[Kelas] NVARCHAR (10),
+	[NoPeserta] VARCHAR (16),
+	[NIK] CHAR (16),
+	[Kelas] VARCHAR (10),
 
 	PRIMARY KEY ([NoPeserta]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK])
@@ -82,7 +81,7 @@ CREATE TABLE [BPJS] (
 
 CREATE TABLE [KEKAYAAN] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NIK] NVARCHAR (16),
+	[NIK] CHAR (16),
 	[PendapatanPerTahun] MONEY,
 
 	PRIMARY KEY ([ID]),
@@ -92,9 +91,9 @@ CREATE TABLE [KEKAYAAN] (
 CREATE TABLE [PROPERTI] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[KekayaanID] UNIQUEIDENTIFIER,
-	[Jenis] NVARCHAR (15),
+	[Jenis] VARCHAR (15),
 	[Luas] INT,
-	[Lokasi] NVARCHAR (128),
+	[Lokasi] VARCHAR (128),
 	[Harga] MONEY,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
@@ -104,10 +103,10 @@ CREATE TABLE [PROPERTI] (
 CREATE TABLE [KENDARAAN] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[KekayaanID] UNIQUEIDENTIFIER,
-	[Jenis_Nama] NVARCHAR (15),
-	[Jenis_Tipe] NVARCHAR (15),
+	[Jenis_Nama] VARCHAR (15),
+	[Jenis_Tipe] VARCHAR (15),
 	[Jenis_CC] INT,
-	[Jenis_BB] NVARCHAR (17),
+	[Jenis_BB] VARCHAR (17),
 	[NJKB] MONEY,
 	[Tahun] INT,
 
@@ -118,7 +117,7 @@ CREATE TABLE [KENDARAAN] (
 CREATE TABLE [INVESTASI] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[KekayaanID] UNIQUEIDENTIFIER,
-	[Jenis] NVARCHAR (15),
+	[Jenis] VARCHAR (15),
 	[Dividen] MONEY,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
@@ -128,7 +127,7 @@ CREATE TABLE [INVESTASI] (
 CREATE TABLE [BARANG_MEWAH] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[KekayaanID] UNIQUEIDENTIFIER,
-	[Jenis] NVARCHAR (15),
+	[Jenis] VARCHAR (15),
 	[Nilai] MONEY,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
@@ -137,13 +136,13 @@ CREATE TABLE [BARANG_MEWAH] (
 
 CREATE TABLE [PEKERJAAN] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NIK] NVARCHAR (16),
+	[NIK] CHAR (16),
 	[KekayaanID] UNIQUEIDENTIFIER,
-	[NamaPekerjaan] NVARCHAR (20),
-	[Jenis] NVARCHAR (20),
+	[NamaPekerjaan] VARCHAR (20),
+	[Jenis] VARCHAR (20),
 	[GajiPerTahun] MONEY,
-	[Lokasi] NVARCHAR (128),
-	[Perusahaan] NVARCHAR (20),
+	[Lokasi] VARCHAR (128),
+	[Perusahaan] VARCHAR (20),
 
 	PRIMARY KEY ([ID]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK]),
@@ -151,7 +150,7 @@ CREATE TABLE [PEKERJAAN] (
 );
 
 CREATE TABLE [PENDUDUK_PEKERJAAN] (
-	[NIK] NVARCHAR (16),
+	[NIK] CHAR (16),
 	[PekerjaanID] UNIQUEIDENTIFIER,
 	[WaktuPerjalanan] INT,
 	[JamKerjaPerMinggu] INT,
@@ -163,11 +162,11 @@ CREATE TABLE [PENDUDUK_PEKERJAAN] (
 
 CREATE TABLE [KESEHATAN] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NIK] NVARCHAR (16),
-	[Alergi] NVARCHAR (15),
-	[Vaksinasi] NVARCHAR (15),
-	[Turunan] NVARCHAR (15),
-	[Disabilitas] NVARCHAR (15),
+	[NIK] CHAR (16),
+	[Alergi] VARCHAR (15),
+	[Vaksinasi] VARCHAR (15),
+	[Turunan] VARCHAR (15),
+	[Disabilitas] VARCHAR (15),
 	[Fisik_Tinggi] INT,
 	[Fisik_BeratBadan] INT,
 
@@ -179,7 +178,7 @@ CREATE TABLE [PENYAKIT] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
 	[KesehatanID] UNIQUEIDENTIFIER,
 	[TanggalDiagnosa] DATE,
-	[Status] NVARCHAR (12),
+	[Status] VARCHAR (12),
 	[TanggalSembuh] DATE,
 
 	PRIMARY KEY ([ID]),
@@ -188,9 +187,9 @@ CREATE TABLE [PENYAKIT] (
 
 CREATE TABLE [PERISTIWA_PENTING] (
 	[ID] UNIQUEIDENTIFIER DEFAULT NEWID(),
-	[NIK] NVARCHAR (16),
+	[NIK] CHAR (16),
 	[TanggalTerjadi] DATE,
-	[NamaPeristiwa] NVARCHAR (64),
+	[NamaPeristiwa] VARCHAR (64),
 
 	PRIMARY KEY ([ID]),
 	FOREIGN KEY ([NIK]) REFERENCES [PENDUDUK]([NIK])
@@ -198,8 +197,8 @@ CREATE TABLE [PERISTIWA_PENTING] (
 
 CREATE TABLE [PERCERAIAN] (
 	[PeristiwaID] UNIQUEIDENTIFIER,
-	[StatusGugatan] NVARCHAR (12),
-	[Alasan] NVARCHAR (128),
+	[StatusGugatan] VARCHAR (12),
+	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
 	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
@@ -207,8 +206,8 @@ CREATE TABLE [PERCERAIAN] (
 
 CREATE TABLE [PERPINDAHAN] (
 	[PeristiwaID] UNIQUEIDENTIFIER,
-	[Asal] NVARCHAR (15),
-	[Tujuan] NVARCHAR (15),
+	[Asal] VARCHAR (15),
+	[Tujuan] VARCHAR (15),
 
 	PRIMARY KEY ([PeristiwaID]),
 	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
@@ -216,8 +215,8 @@ CREATE TABLE [PERPINDAHAN] (
 
 CREATE TABLE [KEMATIAN] (
 	[PeristiwaID] UNIQUEIDENTIFIER,
-	[Lokasi] NVARCHAR (15),
-	[Alasan] NVARCHAR (128),
+	[Lokasi] VARCHAR (15),
+	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
 	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
@@ -225,8 +224,8 @@ CREATE TABLE [KEMATIAN] (
 
 CREATE TABLE [PERUBAHAN_NAMA] (
 	[PeristiwaID] UNIQUEIDENTIFIER,
-	[NamaBaru] NVARCHAR (64),
-	[Alasan] NVARCHAR (128),
+	[NamaBaru] VARCHAR (64),
+	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
 	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
@@ -234,8 +233,8 @@ CREATE TABLE [PERUBAHAN_NAMA] (
 
 CREATE TABLE [PERUBAHAN_STATUSWN] (
 	[PeristiwaID] UNIQUEIDENTIFIER,
-	[StatusBaru] NVARCHAR (20),
-	[Alasan] NVARCHAR (128),
+	[StatusBaru] VARCHAR (20),
+	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
 	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
