@@ -1,6 +1,6 @@
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'KEPENDUDUKAN')
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'KEPENDUDUKAN2')
 BEGIN
-  CREATE DATABASE KEPENDUDUKAN;
+  CREATE DATABASE KEPENDUDUKAN2;
 END;
 GO
 
@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS [KARTU_KELUARGA];
 
 CREATE TABLE [KARTU_KELUARGA] (
 	[NoKK] CHAR (16),
-	[StatusAnggota] VARCHAR (10),
+	[StatusAnggota] VARCHAR (24),
 	[Nama_Ayah] VARCHAR (32),
 	[Nama_Ibu] VARCHAR (32),
 
@@ -39,11 +39,10 @@ CREATE TABLE [KARTU_KELUARGA] (
 CREATE TABLE [PENDUDUK] (
 	[NIK] CHAR (16),
 	[NamaLengkap] VARCHAR (64),
-	[TTL] VARCHAR (30),
 	[Tempat_Lahir] VARCHAR (15),
 	[Tanggal_Lahir] DATE,
 	[NoKK] CHAR (16),
-	[StatusAnggota] VARCHAR (10),
+	[StatusAnggota] VARCHAR (24),
 	[Alamat_Jalan] VARCHAR (32),
 	[Alamat_RTRW] CHAR (11),
 	[Alamat_Desa] VARCHAR (32),
@@ -64,11 +63,9 @@ CREATE TABLE [PENDUDUK] (
 CREATE TABLE [PENDIDIKAN] (
 	[ID] INT,
 	[NIK] CHAR (16),
-	[PendidikanTerakhir] VARCHAR (10),
 	[PendidikanTerakhir_NamaInstansi] VARCHAR (15),
 	[PendidikanTerakhir_Lokasi] VARCHAR (64),
 	[PendidikanTerakhir_TahunLulus] INT,
-	[PendidikanSekarang] VARCHAR (10),
 	[PendidikanSekarang_NamaInstansi] VARCHAR (15),
 	[PendidikanSekarang_Lokasi] VARCHAR (64),
 
@@ -106,7 +103,7 @@ CREATE TABLE [KEKAYAAN] (
 );
 
 CREATE TABLE [PROPERTI] (
-	[ID] INT,
+	[ID] INT, 
 	[KekayaanID] INT,
 	[Jenis] VARCHAR (15),
 	[Luas] INT,
@@ -144,7 +141,7 @@ CREATE TABLE [INVESTASI] (
 CREATE TABLE [BARANG_MEWAH] (
 	[ID] INT,
 	[KekayaanID] INT,
-	[Jenis] VARCHAR (15),
+	[Jenis] VARCHAR (32),
 	[Nilai] DECIMAL,
 
 	PRIMARY KEY ([ID], [KekayaanID]),
@@ -158,7 +155,13 @@ CREATE TABLE [PEKERJAAN] (
 	[NamaPekerjaan] VARCHAR (20),
 	[Jenis] VARCHAR (20),
 	[GajiPerTahun] DECIMAL,
-	[Lokasi] VARCHAR (128),
+	[Alamat_Jalan] VARCHAR (32),
+	[Alamat_RTRW] CHAR (11),
+	[Alamat_Desa] VARCHAR (32),
+	[Alamat_Kecamatan] VARCHAR (32),
+	[Alamat_Kabupaten] VARCHAR (32),
+	[Alamat_Provinsi] VARCHAR (32),
+	[Alamat_KodePos] CHAR (5),
 	[Perusahaan] VARCHAR (20),
 
 	PRIMARY KEY ([ID]),
@@ -183,7 +186,7 @@ CREATE TABLE [KESEHATAN] (
 	[Alergi] VARCHAR (15),
 	[Vaksinasi] VARCHAR (15),
 	[Turunan] VARCHAR (15),
-	[Disabilitas] VARCHAR (15),
+	[Fisik_Disabilitas] VARCHAR (15),
 	[Fisik_Tinggi] INT,
 	[Fisik_BeratBadan] INT,
 
@@ -193,6 +196,7 @@ CREATE TABLE [KESEHATAN] (
 
 CREATE TABLE [PENYAKIT] (
 	[ID] INT,
+	[Nama] VARCHAR(128),
 	[KesehatanID] INT,
 	[TanggalDiagnosa] DATE,
 	[Status] VARCHAR (12),
@@ -232,7 +236,13 @@ CREATE TABLE [PERPINDAHAN] (
 
 CREATE TABLE [KEMATIAN] (
 	[PeristiwaID] INT,
-	[Lokasi] VARCHAR (15),
+	[Alamat_Jalan] VARCHAR (32),
+	[Alamat_RTRW] CHAR (11),
+	[Alamat_Desa] VARCHAR (32),
+	[Alamat_Kecamatan] VARCHAR (32),
+	[Alamat_Kabupaten] VARCHAR (32),
+	[Alamat_Provinsi] VARCHAR (32),
+	[Alamat_KodePos] CHAR (5),
 	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
@@ -241,7 +251,7 @@ CREATE TABLE [KEMATIAN] (
 
 CREATE TABLE [PERUBAHAN_NAMA] (
 	[PeristiwaID] INT,
-	[NamaBaru] VARCHAR (64),
+	[NamaLama] VARCHAR (64),
 	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
@@ -250,7 +260,7 @@ CREATE TABLE [PERUBAHAN_NAMA] (
 
 CREATE TABLE [PERUBAHAN_STATUSWN] (
 	[PeristiwaID] INT,
-	[StatusBaru] VARCHAR (20),
+	[StatusLama] VARCHAR (20),
 	[Alasan] VARCHAR (128),
 
 	PRIMARY KEY ([PeristiwaID]),
@@ -260,16 +270,25 @@ CREATE TABLE [PERUBAHAN_STATUSWN] (
 CREATE TABLE [PENGANGKATAN_ANAK] (
 	[PeristiwaID] INT,
 	[Alasan] VARCHAR (128),
+	[NoKK] CHAR (16),
+	[StatusAnggota] VARCHAR (24),
 
 	PRIMARY KEY ([PeristiwaID]),
-	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID])
+	FOREIGN KEY ([PeristiwaID]) REFERENCES [PERISTIWA_PENTING]([ID]),
+	FOREIGN KEY ([NoKK], [StatusAnggota]) REFERENCES [KARTU_KELUARGA] ([NoKK], [StatusAnggota])
 );
 
 CREATE TABLE [KELAHIRAN] (
 	[PeristiwaID] INT,
 	[Berat] INT,
 	[Kondisi] VARCHAR(16),
-	[Lokasi] VARCHAR (128),
+	[Alamat_Jalan] VARCHAR (32),
+	[Alamat_RTRW] CHAR (11),
+	[Alamat_Desa] VARCHAR (32),
+	[Alamat_Kecamatan] VARCHAR (32),
+	[Alamat_Kabupaten] VARCHAR (32),
+	[Alamat_Provinsi] VARCHAR (32),
+	[Alamat_KodePos] CHAR (5),
 	[NamaAyah] VARCHAR (128),
 	[NamaIbu] VARCHAR (128),
 	[Pengesahan] VARCHAR (16),
